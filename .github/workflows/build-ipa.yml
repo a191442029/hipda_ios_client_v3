@@ -28,6 +28,19 @@ jobs:
           pod install
           grep -m1 objectVersion Pods/Pods.xcodeproj/project.pbxproj
 
+      - name: Diagnose xcodebuild crash
+        run: |
+          set +e
+          echo "=== workspace list ==="
+          xcodebuild -workspace HiPDA.xcworkspace -list 2>&1 | tail -20
+          echo "EXIT1=$?"
+          echo "=== project list ==="
+          xcodebuild -project HiPDA.xcodeproj -list 2>&1 | tail -20
+          echo "EXIT2=$?"
+          echo "=== project dry-run build ==="
+          xcodebuild -project HiPDA.xcodeproj -target HiPDA -configuration Release -sdk iphoneos -dry-run CODE_SIGNING_ALLOWED=NO 2>&1 | tail -20
+          echo "EXIT3=$?"
+
       - name: Build unsigned IPA (arm64)
         run: |
           set -o pipefail
