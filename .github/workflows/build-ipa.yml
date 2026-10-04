@@ -31,15 +31,18 @@ jobs:
       - name: Diagnose xcodebuild crash
         run: |
           set +e
-          echo "=== workspace list ==="
-          xcodebuild -workspace HiPDA.xcworkspace -list 2>&1 | tail -20
-          echo "EXIT1=$?"
-          echo "=== project list ==="
-          xcodebuild -project HiPDA.xcodeproj -list 2>&1 | tail -20
-          echo "EXIT2=$?"
-          echo "=== project dry-run build ==="
-          xcodebuild -project HiPDA.xcodeproj -target HiPDA -configuration Release -sdk iphoneos -dry-run CODE_SIGNING_ALLOWED=NO 2>&1 | tail -20
-          echo "EXIT3=$?"
+          echo "=== A: workspace+scheme list ==="
+          xcodebuild -workspace HiPDA.xcworkspace -scheme HiPDA -list 2>&1 | tail -10
+          echo "EXITA=$?"
+          echo "=== B: scheme dry-run ==="
+          xcodebuild -workspace HiPDA.xcworkspace -scheme HiPDA -configuration Release -sdk iphoneos -dry-run 2>&1 | tail -10
+          echo "EXITB=$?"
+          echo "=== C: full minus OTHER_CFLAGS ==="
+          xcodebuild -workspace HiPDA.xcworkspace -scheme HiPDA -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build ARCHS=arm64 ONLY_ACTIVE_ARCH=NO CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" IPHONEOS_DEPLOYMENT_TARGET=12.0 GCC_TREAT_WARNINGS_AS_ERRORS=NO -dry-run 2>&1 | tail -10
+          echo "EXITC=$?"
+          echo "=== D: full minus signing flags ==="
+          xcodebuild -workspace HiPDA.xcworkspace -scheme HiPDA -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build ARCHS=arm64 IPHONEOS_DEPLOYMENT_TARGET=12.0 -dry-run 2>&1 | tail -10
+          echo "EXITD=$?"
 
       - name: Build unsigned IPA (arm64)
         run: |
