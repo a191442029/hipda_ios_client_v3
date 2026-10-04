@@ -71,16 +71,7 @@
 
 
 #ifndef UI_USER_INTERFACE_IDIOM
-#define UI_USER_INTERFACE_IDIOM() UIUserInterfaceIdiomDesktop
-
-typedef enum
-{
-    UIUserInterfaceIdiomPhone,
-    UIUserInterfaceIdiomPad,
-    UIUserInterfaceIdiomDesktop
-}
-UIUserInterfaceIdiom;
-
+#define UI_USER_INTERFACE_IDIOM() [[UIDevice currentDevice] userInterfaceIdiom]
 #endif
 
 #ifndef __IPHONE_OS_VERSION_MAX_ALLOWED
