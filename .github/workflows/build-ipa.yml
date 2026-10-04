@@ -22,8 +22,11 @@ jobs:
 
       - name: Pod install
         run: |
+          sudo gem install cocoapods -v 1.15.2 --no-document
           pod --version
+          grep -m1 objectVersion HiPDA.xcodeproj/project.pbxproj
           pod install
+          grep -m1 objectVersion Pods/Pods.xcodeproj/project.pbxproj
 
       - name: Build unsigned IPA (arm64)
         run: |
