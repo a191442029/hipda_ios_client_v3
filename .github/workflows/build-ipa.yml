@@ -36,21 +36,42 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
             2>&1 | tee pods.log | tail -80
 
-      - name: Build HiPDA app (unsigned)
+      - name: Build HiPDA app (ad-hoc, fallback Xcode 16)
         run: |
-          set -o pipefail
+          set +e
+          CFLAGS_SUPPRESS='$(inherited) -Wno-error=implicit-function-declaration -Wno-error=incompatible-function-pointer-types -Wno-error=incompatible-pointer-types -Wno-error=int-conversion -Wno-error=implicit-int -Wno-error=return-type -Wno-error=deprecated-non-prototype -Wno-error=enum-constexpr-conversion -Wno-error=deprecated-declarations'
+          echo "=== Attempt A: Xcode 15.2, ad-hoc signing ==="
           xcodebuild -project HiPDA.xcodeproj -target HiPDA \
             -configuration Release -sdk iphoneos SYMROOT=build \
             ARCHS=arm64 \
-            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=YES CODE_SIGNING_ALLOWED=YES \
             IPHONEOS_DEPLOYMENT_TARGET=12.0 \
-            2>&1 | tee build.log | tail -80
+            OTHER_CFLAGS="$CFLAGS_SUPPRESS" \
+            2>&1 | tee build.log | tail -100
+          rc=${PIPESTATUS[0]}
+          echo "attemptA exit=$rc"
+          [ "$rc" -eq 0 ] && exit 0
+          echo "=== Attempt B: switch Xcode 16.2 ==="
+          if [ -d "/Applications/Xcode_16.2.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_16.2.app
+          fi
+          xcodebuild -version
+          xcodebuild -project HiPDA.xcodeproj -target HiPDA \
+            -configuration Release -sdk iphoneos SYMROOT=build2 \
+            ARCHS=arm64 \
+            CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=YES CODE_SIGNING_ALLOWED=YES \
+            IPHONEOS_DEPLOYMENT_TARGET=12.0 \
+            OTHER_CFLAGS="$CFLAGS_SUPPRESS" \
+            2>&1 | tee build2.log | tail -100
+          rc2=${PIPESTATUS[0]}
+          echo "attemptB exit=$rc2"
+          exit $rc2
 
       - name: Dump crash reports on failure
         if: failure()
         run: |
-          ls -t ~/Library/Logs/DiagnosticReports/ 2>/dev/null | head -5 || true
-          for f in $(ls -t ~/Library/Logs/DiagnosticReports/xcodebuild*.ips 2>/dev/null | head -1); do
+          find ~/Library/Logs/DiagnosticReports /Library/Logs/DiagnosticReports -name "*.ips" -mmin -15 2>/dev/null | head -5 || true
+          for f in $(find ~/Library/Logs/DiagnosticReports /Library/Logs/DiagnosticReports -name "xcodebuild*.ips" -mmin -15 2>/dev/null | head -1); do
             echo "=== crash report: $f ==="
             head -c 6000 "$f"
           done
@@ -58,7 +79,7 @@ jobs:
       - name: Package IPA
         if: success()
         run: |
-          APP_PATH=$(find build -type d -name "*.app" -not -path "*Pods*" | head -1)
+          APP_PATH=$(find build build2 -type d -name "*.app" -not -path "*Pods*" 2>/dev/null | head -1)
           echo "App: $APP_PATH"
           mkdir -p Payload
           cp -R "$APP_PATH" Payload/
@@ -79,4 +100,5 @@ jobs:
           name: build-logs
           path: |
             build.log
+            build2.log
             pods.log
