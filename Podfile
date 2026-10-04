@@ -4,7 +4,6 @@ target 'HiPDA' do
   pod "AFNetworking", "1.3.3"
   pod 'SDWebImage', '3.8.2'
   pod 'MTLog'
-  pod 'UI7Kit'
   pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git', :tag => '1.1.3'
   pod 'ZAActivityBar'
   pod 'JSMessagesViewController', '~> 4.0'
