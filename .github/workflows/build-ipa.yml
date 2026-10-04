@@ -31,7 +31,7 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild -project Pods/Pods.xcodeproj -target Pods-HiPDA \
-            -configuration Release -sdk iphoneos -derivedDataPath build \
+            -configuration Release -sdk iphoneos SYMROOT=build \
             ARCHS=arm64 \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
             2>&1 | tee pods.log | tail -80
@@ -40,7 +40,7 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild -project HiPDA.xcodeproj -target HiPDA \
-            -configuration Release -sdk iphoneos -derivedDataPath build \
+            -configuration Release -sdk iphoneos SYMROOT=build \
             ARCHS=arm64 \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
             IPHONEOS_DEPLOYMENT_TARGET=12.0 \
@@ -58,7 +58,7 @@ jobs:
       - name: Package IPA
         if: success()
         run: |
-          APP_PATH=$(find build/Build/Products -type d -name "*.app" | head -1)
+          APP_PATH=$(find build -type d -name "*.app" -not -path "*Pods*" | head -1)
           echo "App: $APP_PATH"
           mkdir -p Payload
           cp -R "$APP_PATH" Payload/
