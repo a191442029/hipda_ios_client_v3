@@ -39,12 +39,18 @@ jobs:
       - name: Build HiPDA app (unsigned)
         run: |
           set -o pipefail
+          echo "=== xcconfig diagnostics ==="
+          ls Pods/Target\ Support\ Files/Pods-HiPDA/ 2>/dev/null | head -10
+          cat Pods/Target\ Support\ Files/Pods-HiPDA/Pods-HiPDA.release.xcconfig 2>/dev/null | head -10
+          grep -c baseConfigurationReference HiPDA.xcodeproj/project.pbxproj
           echo "=== Building app target ==="
           xcodebuild -project HiPDA.xcodeproj -target HiPDA \
             -configuration Release -sdk iphoneos SYMROOT="$(pwd)/out" \
             ARCHS=arm64 \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
             IPHONEOS_DEPLOYMENT_TARGET=12.0 \
+            PODS_ROOT="$(SRCROOT)/Pods" \
+            HEADER_SEARCH_PATHS='$(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/MTLog" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/SVProgressHUD" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/SSKeychain" "${PODS_ROOT}/Headers/Public/MCSwipeTableViewCell" "${PODS_ROOT}/Headers/Public/FMDB" "${PODS_ROOT}/Headers/Public/JSQSystemSoundPlayer" "${PODS_ROOT}/Headers/Public/NSString+Emoji" "${PODS_ROOT}/Headers/Public/ALActionBlocks" "${PODS_ROOT}/Headers/Public/ZAActivityBar" "${PODS_ROOT}/Headers/Public/JSMessagesViewController" "${PODS_ROOT}/Headers/Public/FoundationExtension" "${PODS_ROOT}/Headers/Public/SKBounceAnimation" "${PODS_ROOT}/Headers/Public/GIKPopoverBackgroundView"' \
             OTHER_CFLAGS='$(inherited) -Wno-error=implicit-function-declaration -Wno-error=incompatible-function-pointer-types -Wno-error=incompatible-pointer-types -Wno-error=int-conversion -Wno-error=implicit-int -Wno-error=return-type -Wno-error=deprecated-non-prototype -Wno-error=enum-constexpr-conversion -Wno-error=deprecated-declarations' \
             2>&1 | tee build.log | tail -120
 
