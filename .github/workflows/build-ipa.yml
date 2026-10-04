@@ -40,7 +40,7 @@ jobs:
         run: |
           set +e
           echo "=== Attempt C: lldb backtrace diagnosis ==="
-          lldb -b -o run -o "thread backtrace all" -o quit -- \
+          lldb -b -o run -o continue -o "thread backtrace all" -o quit -- \
             xcodebuild -project HiPDA.xcodeproj -target HiPDA \
             -configuration Release -sdk iphoneos SYMROOT=build3 \
             ARCHS=arm64 CODE_SIGNING_ALLOWED=NO \
