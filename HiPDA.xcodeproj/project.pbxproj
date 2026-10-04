@@ -346,7 +346,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		7A47E8E7D8524543A37BADE9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A47E8E7D8524543A37BADE9 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods-HiPDA.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A528401B22AD42F3B89FBC56 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		D772D4BE192283D100994743 /* HPAttention.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HPAttention.h; path = Model/HPAttention.h; sourceTree = "<group>"; };
 		D772D4BF192283D100994743 /* HPAttention.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HPAttention.m; path = Model/HPAttention.m; sourceTree = "<group>"; };
@@ -2282,25 +2282,20 @@
 				GCC_PREFIX_HEADER = "HiPDA/HiPDA-Prefix.pch";
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"\"$(SDKROOT)/usr/include/libxml2\"",
-					"\"${PODS_ROOT}/Headers\"",
-					"\"${PODS_ROOT}/Headers/AFNetworking\"",
-					"\"${PODS_ROOT}/Headers/DACircularProgress\"",
-					"\"${PODS_ROOT}/Headers/FoundationExtension\"",
-					"\"${PODS_ROOT}/Headers/FoundationExtension/UIKitExtension\"",
-					"\"${PODS_ROOT}/Headers/GIKPopoverBackgroundView\"",
-					"\"${PODS_ROOT}/Headers/HMSegmentedControl\"",
-					"\"${PODS_ROOT}/Headers/MBProgressHUD\"",
-					"\"${PODS_ROOT}/Headers/MCSwipeTableViewCell\"",
-					"\"${PODS_ROOT}/Headers/MTLog\"",
-					"\"${PODS_ROOT}/Headers/MWPhotoBrowser\"",
-					"\"${PODS_ROOT}/Headers/SDWebImage\"",
-					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
-					"\"${PODS_ROOT}/Headers/SWRevealViewController\"",
-					"\"${PODS_ROOT}/Headers/SevenSwitch\"",
-					"\"${PODS_ROOT}/Headers/UI7Kit\"",
-					"\"${PODS_ROOT}/Headers/UI7Kit/UI7Kit\"",
-					"\"${PODS_ROOT}/Headers/UIKitResources\"",
-					"\"${PODS_ROOT}/Headers/cdebug\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/ALActionBlocks\"",
+					"\"${PODS_ROOT}/Headers/Public/FMDB\"",
+					"\"${PODS_ROOT}/Headers/Public/JSMessagesViewController\"",
+					"\"${PODS_ROOT}/Headers/Public/JSQSystemSoundPlayer\"",
+					"\"${PODS_ROOT}/Headers/Public/MCSwipeTableViewCell\"",
+					"\"${PODS_ROOT}/Headers/Public/MTLog\"",
+					"\"${PODS_ROOT}/Headers/Public/NSString+Emoji\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SKBounceAnimation\"",
+					"\"${PODS_ROOT}/Headers/Public/SSKeychain\"",
+					"\"${PODS_ROOT}/Headers/Public/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/ZAActivityBar\"",
 				);
 				INFOPLIST_FILE = "HiPDA/HiPDA-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -2326,25 +2321,20 @@
 				GCC_PREFIX_HEADER = "HiPDA/HiPDA-Prefix.pch";
 				"HEADER_SEARCH_PATHS[arch=*]" = (
 					"\"$(SDKROOT)/usr/include/libxml2\"",
-					"\"${PODS_ROOT}/Headers\"",
-					"\"${PODS_ROOT}/Headers/AFNetworking\"",
-					"\"${PODS_ROOT}/Headers/DACircularProgress\"",
-					"\"${PODS_ROOT}/Headers/FoundationExtension\"",
-					"\"${PODS_ROOT}/Headers/FoundationExtension/UIKitExtension\"",
-					"\"${PODS_ROOT}/Headers/GIKPopoverBackgroundView\"",
-					"\"${PODS_ROOT}/Headers/HMSegmentedControl\"",
-					"\"${PODS_ROOT}/Headers/MBProgressHUD\"",
-					"\"${PODS_ROOT}/Headers/MCSwipeTableViewCell\"",
-					"\"${PODS_ROOT}/Headers/MTLog\"",
-					"\"${PODS_ROOT}/Headers/MWPhotoBrowser\"",
-					"\"${PODS_ROOT}/Headers/SDWebImage\"",
-					"\"${PODS_ROOT}/Headers/SVProgressHUD\"",
-					"\"${PODS_ROOT}/Headers/SWRevealViewController\"",
-					"\"${PODS_ROOT}/Headers/SevenSwitch\"",
-					"\"${PODS_ROOT}/Headers/UI7Kit\"",
-					"\"${PODS_ROOT}/Headers/UI7Kit/UI7Kit\"",
-					"\"${PODS_ROOT}/Headers/UIKitResources\"",
-					"\"${PODS_ROOT}/Headers/cdebug\"",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/ALActionBlocks\"",
+					"\"${PODS_ROOT}/Headers/Public/FMDB\"",
+					"\"${PODS_ROOT}/Headers/Public/JSMessagesViewController\"",
+					"\"${PODS_ROOT}/Headers/Public/JSQSystemSoundPlayer\"",
+					"\"${PODS_ROOT}/Headers/Public/MCSwipeTableViewCell\"",
+					"\"${PODS_ROOT}/Headers/Public/MTLog\"",
+					"\"${PODS_ROOT}/Headers/Public/NSString+Emoji\"",
+					"\"${PODS_ROOT}/Headers/Public/SDWebImage\"",
+					"\"${PODS_ROOT}/Headers/Public/SKBounceAnimation\"",
+					"\"${PODS_ROOT}/Headers/Public/SSKeychain\"",
+					"\"${PODS_ROOT}/Headers/Public/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/ZAActivityBar\"",
 				);
 				INFOPLIST_FILE = "HiPDA/HiPDA-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
