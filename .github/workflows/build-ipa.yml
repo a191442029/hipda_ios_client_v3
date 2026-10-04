@@ -36,25 +36,19 @@ jobs:
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
             2>&1 | tee pods.log | tail -80
 
-      - name: Build HiPDA app (lldb diagnose + abs SYMROOT)
+      - name: Build HiPDA app (ad-hoc)
         run: |
           set +e
-          echo "=== Attempt C: lldb backtrace diagnosis ==="
-          lldb -b -o run -o continue -o "thread backtrace all" -o quit -- \
-            xcodebuild -project HiPDA.xcodeproj -target HiPDA \
-            -configuration Release -sdk iphoneos SYMROOT=build3 \
-            ARCHS=arm64 CODE_SIGNING_ALLOWED=NO \
-            2>&1 | tee lldb.log | tail -150
-          echo "=== Attempt D: absolute SYMROOT ==="
+          echo "=== Building app target ==="
           xcodebuild -project HiPDA.xcodeproj -target HiPDA \
             -configuration Release -sdk iphoneos SYMROOT="$(pwd)/out" \
             ARCHS=arm64 \
             CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=YES CODE_SIGNING_ALLOWED=YES \
             IPHONEOS_DEPLOYMENT_TARGET=12.0 \
             OTHER_CFLAGS='$(inherited) -Wno-error=implicit-function-declaration -Wno-error=incompatible-function-pointer-types -Wno-error=incompatible-pointer-types -Wno-error=int-conversion -Wno-error=implicit-int -Wno-error=return-type -Wno-error=deprecated-non-prototype -Wno-error=enum-constexpr-conversion -Wno-error=deprecated-declarations' \
-            2>&1 | tee build.log | tail -100
+            2>&1 | tee build.log | tail -120
           rc=${PIPESTATUS[0]}
-          echo "attemptD exit=$rc"
+          echo "exit=$rc"
           exit $rc
 
       - name: Dump crash reports on failure
@@ -69,7 +63,7 @@ jobs:
       - name: Package IPA
         if: success()
         run: |
-          APP_PATH=$(find "$(pwd)/out" build3 -type d -name "*.app" -not -path "*Pods*" 2>/dev/null | head -1)
+          APP_PATH=$(find "$(pwd)/out" -type d -name "*.app" -not -path "*Pods*" 2>/dev/null | head -1)
           echo "App: $APP_PATH"
           mkdir -p Payload
           cp -R "$APP_PATH" Payload/
@@ -90,5 +84,4 @@ jobs:
           name: build-logs
           path: |
             build.log
-            lldb.log
             pods.log
